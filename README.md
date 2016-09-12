@@ -1,11 +1,13 @@
 # Controllux
 
-### Mainly for fun:
+### Now you can namespace your stores and actions with controllers:
 
 1. you can now make your own controllers that handle different states
 1. each controller has it's own defined actions (set by you)
 1. this helps namespace the flux api for your application
 1. you can call the state from any controller if you need it at any point in time
+
+**This helps you make more restful application actions on namespaced stores, since you can now reuse the same action names on different controllers**
 
 ***
 
