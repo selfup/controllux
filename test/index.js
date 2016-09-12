@@ -1,0 +1,2 @@
+require('./main-test.js')
+
