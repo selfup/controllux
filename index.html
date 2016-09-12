@@ -5,9 +5,15 @@
   <title>controllux</title>
 </head>
 <body>
+  <h1> Number One </h1>
   <button onclick="app.counter.send('UP', 1)">Up Num!</button>
   <button onclick="app.counter.send('DOWN', 1)">Down Num!</button>
   <h1 id="num"></h1>
+
+  <h1>Number Two</h1>
+  <button onclick="app.counterTwo.send('UP', 1)">Up Num!</button>
+  <button onclick="app.counterTwo.send('DOWN', 1)">Down Num!</button>
+  <h1 id="num-two"></h1>
   <script src="controllux.min.js"></script>
   <script>
     const { createStore, createController, imut } = Controllux
@@ -15,7 +21,7 @@
 
     const counterState = createStore({number: 0})
 
-    const actions = {
+    const counterStateActions = {
       UP: (state, num) => {
         const { number } = state.toObject()
         return state.set('number', number + 1)
@@ -26,13 +32,40 @@
       }
     }
 
-    const render = (newState) => {
+    const counterStateTwo = createStore({number: 0})
+
+    const counterStateTwoActions = {
+      UP: (state, num) => {
+        const { number } = state.toObject()
+        return state.set('number', number + 1)
+      },
+      DOWN: (state, num) => {
+        const { number } = state.toObject()
+        return state.set('number', number - 1)
+      }
+    }
+
+    const render = newState => {
       document.getElementById('num').innerHTML = newState.number
     }
 
+    const renderTwo = newState => {
+      document.getElementById('num-two').innerHTML = newState.number
+    }
+
     window.app = {}
-    window.app.counter = createController(counterState, actions)
+
+    window.app.counter = createController(
+      counterState,
+      counterStateActions
+    )
     window.app.counter.sub(render)
+
+    window.app.counterTwo = createController(
+      counterStateTwo,
+      counterStateTwoActions
+    )
+    window.app.counterTwo.sub(renderTwo)
   </script>
 </body>
 </html>
