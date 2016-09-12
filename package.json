@@ -1,6 +1,6 @@
 {
   "name": "controllux",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "description": "Redux like Flux",
   "main": "./lib/main.js",
   "scripts": {
