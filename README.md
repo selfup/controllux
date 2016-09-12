@@ -19,7 +19,7 @@ Here is an example on jsfiddle: https://jsfiddle.net/selfup/fq1k9vh4/
 
 ### Another Example:
 
-Here is the example on **Github** pages (custom domain): http://selfup.me/controllux
+Here is the example on **GitHub** pages (custom domain): http://selfup.me/controllux
 
 Here is the example on **GitLab** pages: https://selfup.gitlab.io/controllux
 
