@@ -5,12 +5,12 @@
   <title>controllux</title>
 </head>
 <body>
-  <h1> Number One </h1>
+  <h1> Number One (+/- 1)</h1>
   <button onclick="app.counter.send('UP', 1)">Up Num!</button>
   <button onclick="app.counter.send('DOWN', 1)">Down Num!</button>
   <h1 id="num"></h1>
 
-  <h1>Number Two</h1>
+  <h1>Number Two (+/- 10)</h1>
   <button onclick="app.counterTwo.send('UP', 1)">Up Num!</button>
   <button onclick="app.counterTwo.send('DOWN', 1)">Down Num!</button>
   <h1 id="num-two"></h1>
@@ -37,11 +37,11 @@
     const counterStateTwoActions = {
       UP: (state, num) => {
         const { number } = state.toObject()
-        return state.set('number', number + 1)
+        return state.set('number', number + 10)
       },
       DOWN: (state, num) => {
         const { number } = state.toObject()
-        return state.set('number', number - 1)
+        return state.set('number', number - 10)
       }
     }
 
