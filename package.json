@@ -1,14 +1,15 @@
 {
   "name": "controllux",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Redux like Flux",
   "main": "./lib/main.js",
   "scripts": {
     "start": "webpack-dev-server",
     "build": "webpack",
-    "package": "browserify lib/main.js -o index.js -t [ babelify --presets [ es2015 ] ]",
-    "web": "browserify lib/web.js -o web.js -t [ babelify --presets [ es2015 ] ]",
-    "min": "browserify web.js | uglifyjs -c > web.min.js"
+    "web": "browserify lib/web.js -o controllux.js -t [ babelify --presets [ es2015 ] ]",
+    "min": "browserify controllux.js | uglifyjs -c > controllux.min.js",
+    "prep": "npm run web && npm run min",
+    "pub": "npm run prep && npm version patch && npm publish"
   },
   "repository": {
     "type": "git",

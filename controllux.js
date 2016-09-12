@@ -54,7 +54,10 @@ window.Controllux = {
   },
   createStore: function createStore(obj) {
     return _immutable2.default.Map(obj);
-  }
+  },
+  imut: function () {
+    return _immutable2.default;
+  }()
 };
 
 },{"immutable":2}],2:[function(require,module,exports){

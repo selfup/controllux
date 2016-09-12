@@ -8,16 +8,17 @@
   <button onclick="app.counter.send('UP', 1)">Up Num!</button>
   <button onclick="app.counter.send('DOWN', 1)">Down Num!</button>
   <h1 id="num"></h1>
-  <script src="web.min.js"></script>
+  <script src="controllux.min.js"></script>
   <script>
-    const { createStore, createController } = Controllux
+    const { createStore, createController, imut } = Controllux
+    // imut is now Immutable JS
 
     const counterState = createStore({number: 0})
 
     const actions = {
       UP: (state, num) => {
-        const { number } = state.toObject() // => 0
-        return state.set('number', number + 1) // number = 1
+        const { number } = state.toObject()
+        return state.set('number', number + 1)
       },
       DOWN: (state, num) => {
         const { number } = state.toObject()
