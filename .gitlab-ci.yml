@@ -8,7 +8,8 @@ pages:
   script:
     - mkdir .public
     - cp index.html .public
-    - cp web.js .public
+    - cp controllux.js .public
+    - cp controllux.min.js .public
     - mv .public public
   artifacts:
     paths:
