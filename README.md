@@ -1,94 +1,13 @@
-# Stateful Store
+# Controllux
 
-### Developer Use
+### Mainly for fun but:
 
-Currently the main API methods are:
+1. you can now make your own controllers that handle different states
+1. and each controller has it's own defined actions (set by you)
+1. this helps namespace the flux api for your application (edited)
 
-```javascript
-const LspiFlux = require('lspi-flux')
-const lf       = new LspiFlux()
+It is immutable by default, and follows the vanilla redux example (which subscribes to a simple render function that replace the innerHTML of a certain element)
 
-// this will make an LspiFlux object with the following defaults
-// LspiFlux {storeName: "lspi-flux", mainStore: {}}
+### Example:
 
-lf.fetchState 
-
-// if all goes well this will return {status: true, state: {}} ->
-lf.fetchState.state // {}
-lf.fetchState.status // true
-
-// if localStorage fails, this will return the state in memory before writing to localStorage
-// it will also return a 'status' of false to help handle errors
-
-const someObject = {wow: "wow"}
-lf.setState(someObject) // this will return the same object as fetchState
-
-// but the state here will be updated if nothing went wrong
-// otherwise, handle the error by checking for a flase status
-
-
-// if all goes well this will return {status: true, state: {wow: "wow"}} ->
-lf.setState(someObject).state // {wow: "wow"}
-lf.setState(someObject).status // true
-
-// say you want to name the store and set a default value yourself ->
-const ideas = new LspiFlux({}, 'ideas')
-
-ideas.setState([{wow: "ok"}, {wow: "ok"}, {wow: "nope"}])
-
-/***
-whereState will return an object with two keys
-  status:
-  match:
-
-this does not return the objects state
-instead it returns the match of objects wrapped in an array if there are any
-***/ // ->
-const okResult = ideas.whereState('wow', 'ok')
-const okMatch  = okResult.match
-
-okResult.state // true
-okResult.match // [{wow: "ok"}, {wow: "ok"}]
-// okMatch -> [{wow: "ok"}, {wow: "ok"}]
-
-const nopeResult = ideas.whereState('wow', 'nope')
-const nopeMatch  = nopeResult.match
-
-nopeResult.state // true
-nopeResult.match // [{wow: "nope"}]
-// nopeMatch -> [{wow: "nope"}]
-
-// this is all that this library offers for the moment
-// but a lot can be done to handle state with these three simple methods
-
-// Enjoy!
-```
-
-### Current tests
-
-![](http://i.imgur.com/CeCNnJK.png)
-
-### Contributor Setup
-
-Go to either: https://github.com/selfup/lspi-flux
-
-Or:           https://gitlab.com/selfup/lspi-flux
-
-*Clone one of them and:*
-
-```
-npm install
-```
-
-### To run the tests:
-
-```
-npm start
-```
-
-Then go to: http://localhost:8080/webpack-dev-server/test.html
-
-### TODO
-
-* Write more Documentation
-* Ask for feedback about the API
+Here is an example on jsfiddle: https://jsfiddle.net/selfup/fq1k9vh4/
