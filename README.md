@@ -1,6 +1,6 @@
 # Controllux
 
-### Mainly for fun but:
+### Mainly for fun:
 
 1. you can now make your own controllers that handle different states
 1. and each controller has it's own defined actions (set by you)
