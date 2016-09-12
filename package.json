@@ -7,7 +7,8 @@
     "start": "webpack-dev-server",
     "build": "webpack",
     "package": "browserify lib/main.js -o index.js -t [ babelify --presets [ es2015 ] ]",
-    "web": "browserify lib/web.js -o web.js -t [ babelify --presets [ es2015 ] ]"
+    "web": "browserify lib/web.js -o web.js -t [ babelify --presets [ es2015 ] ]",
+    "min": "browserify web.js | uglifyjs -c > web.min.js"
   },
   "repository": {
     "type": "git",
