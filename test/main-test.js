@@ -1,5 +1,5 @@
-const chai      = require('chai')
-const assert    = chai.assert
+const chai = require('chai')
+const assert = chai.assert
 const Controllux = require('../lib/main')
 
 describe('user uses controllux', function () {
@@ -18,7 +18,7 @@ describe('user uses controllux', function () {
     }
   }
 
-  const render = (newState) => {
+  const render = newState => {
     document.getElementById('num').innerHTML = newState.number
   }
 

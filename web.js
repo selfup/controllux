@@ -17,7 +17,7 @@ window.Controllux = {
       function _class(appState, actions) {
         _classCallCheck(this, _class);
 
-        this.mutabilityCheck(appState);
+        if (this.mutabileCheck(appState)) return;
         this.appState = appState;
         this.actions = actions;
       }
@@ -25,8 +25,9 @@ window.Controllux = {
       _createClass(_class, [{
         key: 'send',
         value: function send(message, arg) {
-          this.appState = this.actions[message](this.appState, arg);
-          this.mutabilityCheck();
+          var newState = this.actions[message](this.appState, arg);
+          if (this.mutabileCheck(newState)) return;
+          this.appState = newState;
           this.render(this.appState.toObject());
         }
       }, {
@@ -36,11 +37,15 @@ window.Controllux = {
           this.render = fn;
         }
       }, {
-        key: 'mutabilityCheck',
-        value: function mutabilityCheck() {
+        key: 'mutabileCheck',
+        value: function mutabileCheck() {
           var appState = arguments.length <= 0 || arguments[0] === undefined ? this.appState : arguments[0];
 
-          if (!appState._root.entries) return console.error('Use `createStore` to create immutable stores please');
+          if (!_immutable2.default.Map.isMap(appState)) {
+            console.error('Not Immutable');
+            return true;
+          }
+          if (_immutable2.default.Map.isMap(appState)) return false;
         }
       }]);
 
