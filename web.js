@@ -17,7 +17,7 @@ window.Controllux = {
       function _class(appState, actions) {
         _classCallCheck(this, _class);
 
-        if (this.mutabileCheck(appState)) return;
+        if (this.mutableCheck(appState)) return;
         this.appState = appState;
         this.actions = actions;
       }
@@ -26,7 +26,7 @@ window.Controllux = {
         key: 'send',
         value: function send(message, arg) {
           var newState = this.actions[message](this.appState, arg);
-          if (this.mutabileCheck(newState)) return;
+          if (this.mutableCheck(newState)) return;
           this.appState = newState;
           this.render(this.appState.toObject());
         }
@@ -37,8 +37,8 @@ window.Controllux = {
           this.render = fn;
         }
       }, {
-        key: 'mutabileCheck',
-        value: function mutabileCheck() {
+        key: 'mutableCheck',
+        value: function mutableCheck() {
           var appState = arguments.length <= 0 || arguments[0] === undefined ? this.appState : arguments[0];
 
           if (!_immutable2.default.Map.isMap(appState)) {
