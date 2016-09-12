@@ -52,7 +52,11 @@ var Controllux = {
   }
 };
 
-module.exports = Controllux;
+if (window.location.href.includes('selfup')) {
+  window.Controllux = Controllux;
+} else {
+  module.exports = Controllux;
+}
 
 },{"immutable":2}],2:[function(require,module,exports){
 /**
