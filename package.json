@@ -6,7 +6,8 @@
   "scripts": {
     "start": "webpack-dev-server",
     "build": "webpack",
-    "package": "browserify lib/main.js -o index.js -t [ babelify --presets [ es2015 ] ]"
+    "package": "browserify lib/main.js -o index.js -t [ babelify --presets [ es2015 ] ]",
+    "web": "browserify lib/web.js -o web.js -t [ babelify --presets [ es2015 ] ]"
   },
   "repository": {
     "type": "git",
