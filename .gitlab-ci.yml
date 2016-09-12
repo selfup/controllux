@@ -1,0 +1,17 @@
+image: "node:6.4"
+
+stages:
+  - deploy
+
+pages:
+  stage: deploy
+  script:
+    - mkdir .public
+    - cp index.html .public
+    - cp index.js .public
+    - mv .public public
+  artifacts:
+    paths:
+      - public
+  only:
+    - master
