@@ -67,13 +67,9 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _immutable = __webpack_require__(2);
-
-	var _immutable2 = _interopRequireDefault(_immutable);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var Immutable = __webpack_require__(2);
 
 	var Controllux = {
 	  createController: function createController(appState, actions) {
@@ -81,8 +77,7 @@
 	      function _class(appState, actions) {
 	        _classCallCheck(this, _class);
 
-	        console.log('ok');
-	        if (!this.mutabilityCheck(appState)) return;
+	        if (this.mutableCheck(appState)) return;
 	        this.appState = appState;
 	        this.actions = actions;
 	      }
@@ -91,7 +86,7 @@
 	        key: 'send',
 	        value: function send(message, arg) {
 	          var newState = this.actions[message](this.appState, arg);
-	          if (!this.mutabilityCheck(newState)) return;
+	          if (this.mutableCheck(newState)) return;
 	          this.appState = newState;
 	          this.render(this.appState.toObject());
 	        }
@@ -102,14 +97,15 @@
 	          this.render = fn;
 	        }
 	      }, {
-	        key: 'mutabilityCheck',
-	        value: function mutabilityCheck() {
+	        key: 'mutableCheck',
+	        value: function mutableCheck() {
 	          var appState = arguments.length <= 0 || arguments[0] === undefined ? this.appState : arguments[0];
 
-	          if (!appState._root.entries) {
-	            console.error('Use `createStore` to create immutable stores please');
-	            return false;
+	          if (!Immutable.Map.isMap(appState)) {
+	            console.error('Not Immutable');
+	            return true;
 	          }
+	          if (Immutable.Map.isMap(appState)) return false;
 	        }
 	      }]);
 
@@ -117,8 +113,11 @@
 	    }())(appState, actions);
 	  },
 	  createStore: function createStore(obj) {
-	    return _immutable2.default.Map(obj);
-	  }
+	    return Immutable.Map(obj);
+	  },
+	  imut: function () {
+	    return Immutable;
+	  }()
 	};
 
 	module.exports = Controllux;
@@ -5131,8 +5130,8 @@
 	// Hot Module Replacement
 	if(false) {
 		// When the styles change, update the <style> tags
-		module.hot.accept("!!/home/selfup/Documents/controllux/node_modules/css-loader/index.js!/home/selfup/Documents/controllux/node_modules/mocha/mocha.css", function() {
-			var newContent = require("!!/home/selfup/Documents/controllux/node_modules/css-loader/index.js!/home/selfup/Documents/controllux/node_modules/mocha/mocha.css");
+		module.hot.accept("!!/Users/RJPB2/Documents/controllux/node_modules/css-loader/index.js!/Users/RJPB2/Documents/controllux/node_modules/mocha/mocha.css", function() {
+			var newContent = require("!!/Users/RJPB2/Documents/controllux/node_modules/css-loader/index.js!/Users/RJPB2/Documents/controllux/node_modules/mocha/mocha.css");
 			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 			update(newContent);
 		});
@@ -5414,7 +5413,8 @@
 	describe('user uses controllux', function () {
 	  var createStore = Controllux.createStore;
 	  var createController = Controllux.createController;
-
+	  var imut = Controllux.imut;
+	  // imut is now Immutable JS
 
 	  var counterState = createStore({ number: 0 });
 
@@ -5422,9 +5422,9 @@
 	    UP: function UP(state, num) {
 	      var _state$toObject = state.toObject();
 
-	      var number = _state$toObject.number; // => 0
+	      var number = _state$toObject.number;
 
-	      return state.set('number', number + 1); // number = 1
+	      return state.set('number', number + 1);
 	    },
 	    DOWN: function DOWN(state, num) {
 	      var _state$toObject2 = state.toObject();
@@ -5443,7 +5443,14 @@
 	  window.app.counter = createController(counterState, actions);
 	  window.app.counter.sub(render);
 
-	  it('should load default state correctly', function () {
+	  it('properly exposes Immutable JS', function () {
+	    var imutTest = imut.Map({ ok: 'nice' });
+
+	    assert.instanceOf(imutTest, imut.Map);
+	    assert.deepEqual(imutTest.toObject(), { ok: 'nice' });
+	  });
+
+	  it('basic functionality is a go', function () {
 	    assert.deepEqual(app.counter.appState.toObject(), { number: 0 });
 	    app.counter.send('UP', 1);
 
@@ -13793,40 +13800,25 @@
 	var cachedSetTimeout;
 	var cachedClearTimeout;
 
-	function defaultSetTimout() {
-	    throw new Error('setTimeout has not been defined');
-	}
-	function defaultClearTimeout () {
-	    throw new Error('clearTimeout has not been defined');
-	}
 	(function () {
 	    try {
-	        if (typeof setTimeout === 'function') {
-	            cachedSetTimeout = setTimeout;
-	        } else {
-	            cachedSetTimeout = defaultSetTimout;
-	        }
+	        cachedSetTimeout = setTimeout;
 	    } catch (e) {
-	        cachedSetTimeout = defaultSetTimout;
+	        cachedSetTimeout = function () {
+	            throw new Error('setTimeout is not defined');
+	        }
 	    }
 	    try {
-	        if (typeof clearTimeout === 'function') {
-	            cachedClearTimeout = clearTimeout;
-	        } else {
-	            cachedClearTimeout = defaultClearTimeout;
-	        }
+	        cachedClearTimeout = clearTimeout;
 	    } catch (e) {
-	        cachedClearTimeout = defaultClearTimeout;
+	        cachedClearTimeout = function () {
+	            throw new Error('clearTimeout is not defined');
+	        }
 	    }
 	} ())
 	function runTimeout(fun) {
 	    if (cachedSetTimeout === setTimeout) {
 	        //normal enviroments in sane situations
-	        return setTimeout(fun, 0);
-	    }
-	    // if setTimeout wasn't available but was latter defined
-	    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
-	        cachedSetTimeout = setTimeout;
 	        return setTimeout(fun, 0);
 	    }
 	    try {
@@ -13847,11 +13839,6 @@
 	function runClearTimeout(marker) {
 	    if (cachedClearTimeout === clearTimeout) {
 	        //normal enviroments in sane situations
-	        return clearTimeout(marker);
-	    }
-	    // if clearTimeout wasn't available but was latter defined
-	    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
-	        cachedClearTimeout = clearTimeout;
 	        return clearTimeout(marker);
 	    }
 	    try {

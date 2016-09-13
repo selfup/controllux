@@ -56,13 +56,9 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _immutable = __webpack_require__(2);
-
-	var _immutable2 = _interopRequireDefault(_immutable);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var Immutable = __webpack_require__(2);
 
 	var Controllux = {
 	  createController: function createController(appState, actions) {
@@ -70,8 +66,7 @@
 	      function _class(appState, actions) {
 	        _classCallCheck(this, _class);
 
-	        console.log('ok');
-	        if (!this.mutabilityCheck(appState)) return;
+	        if (this.mutableCheck(appState)) return;
 	        this.appState = appState;
 	        this.actions = actions;
 	      }
@@ -80,7 +75,7 @@
 	        key: 'send',
 	        value: function send(message, arg) {
 	          var newState = this.actions[message](this.appState, arg);
-	          if (!this.mutabilityCheck(newState)) return;
+	          if (this.mutableCheck(newState)) return;
 	          this.appState = newState;
 	          this.render(this.appState.toObject());
 	        }
@@ -91,14 +86,15 @@
 	          this.render = fn;
 	        }
 	      }, {
-	        key: 'mutabilityCheck',
-	        value: function mutabilityCheck() {
+	        key: 'mutableCheck',
+	        value: function mutableCheck() {
 	          var appState = arguments.length <= 0 || arguments[0] === undefined ? this.appState : arguments[0];
 
-	          if (!appState._root.entries) {
-	            console.error('Use `createStore` to create immutable stores please');
-	            return false;
+	          if (!Immutable.Map.isMap(appState)) {
+	            console.error('Not Immutable');
+	            return true;
 	          }
+	          if (Immutable.Map.isMap(appState)) return false;
 	        }
 	      }]);
 
@@ -106,8 +102,11 @@
 	    }())(appState, actions);
 	  },
 	  createStore: function createStore(obj) {
-	    return _immutable2.default.Map(obj);
-	  }
+	    return Immutable.Map(obj);
+	  },
+	  imut: function () {
+	    return Immutable;
+	  }()
 	};
 
 	module.exports = Controllux;
